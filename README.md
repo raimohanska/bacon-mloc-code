@@ -3,7 +3,7 @@
 1. Clone this repo
 
     ~~~
-    git clone https://github.com/raimohanska/bacon-devday-code.git
+    git clone https://github.com/raimohanska/bacon-mloc-code.git
     cd bacon-devday-code
     ~~~
 
