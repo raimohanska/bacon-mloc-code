@@ -32,7 +32,7 @@
             .map(function(user) { return { url : "/usernameavailable/" + user } })
           availabilityResponse = availabilityRequest.ajax()
           usernameAvailable = availabilityResponse.toProperty(true)
-          usernameRequestPending = availabilityResponse.pending(availabilityRequest)
+          usernameRequestPending = availabilityRequest.awaiting(availabilityResponse)
 
           // fullname
           fullname = Bacon.UI.textFieldValue(fullnameField)
@@ -49,7 +49,7 @@
               }
           }).sampledBy(registerClick)
           registrationResponse = registrationRequest.ajax()
-          registrationPending = registrationResponse.pending(registrationRequest)
+          registrationPending = registrationRequest.awaiting(registrationResponse)
           registrationSent = registrationRequest.map(true).toProperty(false)
 
           // button enabled state
