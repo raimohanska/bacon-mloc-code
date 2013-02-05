@@ -1,60 +1,75 @@
-## The Assignment
-
-Implement a Registration Form that
-
-* Has input fields for username and fullname
-* Verifies username availability using `GET /usernameavailable/<username>`
-* Shows "Username is unavailable" text if username is unavailable
-* Sends registration when Register button is pressed, using `POST
-  /register { username: x, fullname: y }`
-* Shows a feedback "Thanks!" when registration is complete
-* Enables Register button only if both informations are entered and
-  username is available
-* Shows AJAX loading indicators beside the username field (when
-  verifying) and the Register button (when registering)
-* Disables the Register button also when either registration or username
-  verification is pending
-
 ## Preparations
 
-* Get a browser with developer tools (Chrome will do)
-* Read the README of [Bacon.js](https://github.com/raimohanska/bacon.js)
-* Clone this repo
-* Open [index.html](index.html)
+1. Clone this repo
 
-## Starting point
+    ~~~
+    git clone https://github.com/raimohanska/bacon-devday-code.git
+    cd bacon-devday-code
+    ~~~
 
-* [HTML page](index.html) with the required form elements
-* Javascript imports for Bacon.js, Bacon.UI.js, jQuery.js
-* Javascript stub embedded in the HTML file
-* Implementation of the username property
-* The required AJAX services are mocked for you using [Mockjax](https://github.com/appendto/jquery-mockjax), so you don't need any background server.
+2. Open the index.html file in your browser
 
-## Guidelines / intro
+    ~~~
+    open index.html
+    ~~~
 
-I usually start by defining some streams, at this point as global/window
-variables, so that I can debug them easier. I included a `show` function
-in the stub, so that you can debug your streams easily like this:
+3. Make sure you have developer tools in your browser and that you can
+   use them. Google Chrome will do. In Chrome (Mac OSX), Go to View ->
+Developer -> Developer Tools. You should be able to run Javascript
+expressions on the Console tab.
 
-    username.onValue(show)
+4. Try some expression in the Developer Console, like
 
-This would lead to all events appearing in the "username" stream to be
-printed to the console.
+    ~~~
+    $("#username input").asEventStream("keyup")
+    ~~~
 
-## Suggested steps
+5. Have a look at Bacon.js
+   [readme](https://github.com/raimohanska/bacon.js/blob/master/README.md)
 
-* Disable button when username is empty (tips: usernameMissing property,
-  map, onValue)
-* Disable also if fullname if missing (tips: new properties,
-  Property.or)
-* Implement availability query (tips: map, ajax)
-* Disable button if username unavailable (tips: Property.or,
-  Property.not)
-* Show unavailability information (tips: onValue, "toggle")
-* What happens with empty username? How to fix? (tips: filter)
-* Show AJAX indicator when AJAX pending (tips: map, merge, toProperty)
-* Disable button when AJAX is pending
-* Implement registerClick stream (tips: preventDefault)
-* Implement registration request stream(tips: combineTemplate, sampledBy)
-* Send POST request to server (tips: switch, $.ajax, type="post")
-* Show registration feedback (tips: onValue, $.text)
+## Map
+
+Here's how I modeled the problem for Bacon.js reactive code.
+
+![diagram](https://raw.github.com/raimohanska/bacon-devday-code/master/images/registration-form-bacon.png)
+
+Side-effects are not depicted.
+
+## Steps to success
+
+1. Disable button if username is missing
+  * define usernameEntered property
+  * assign side-effect: setDisabled for registerButton
+
+2. Disable also if full name is missing
+  * define fullname and fullnameEntered properties
+  * use .and() to change the condition for enabling the button
+
+3. Disable also if username unavailable
+  * include usernameAvailable to the condition for enabling the button
+
+4. Show AJAX indicator when AJAX pending
+  * define usernameRequestPending property as usernameRequest.awaiting(usernameResponse)
+  * assign side effect to show usernameAjaxIndicator
+
+5. Disable button when AJAX is pending
+
+6. Implement registerClick stream
+  * tip: do(".preventDefault")
+
+7. Implement registrationRequest
+  * combine username and password into a new property that would be the data given to JQuery.ajax
+  * can use username.combine(..) or Bacon.combineTemplate
+  * type: "POST"
+
+8. Make this a stream of registration requests, send when the button is clicked
+  * .sampledBy(registerClick)
+
+9. Create registrationResponse stream
+  * as in usernameResponse stream
+
+10. Show feedback
+
+11. Disable button after registration sent
+
+12. Show ajax indicator for registration POST
