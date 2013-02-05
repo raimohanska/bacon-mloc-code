@@ -49,7 +49,7 @@ Side-effects are not depicted.
   * include usernameAvailable to the condition for enabling the button
 
 4. Show AJAX indicator when AJAX pending
-  * define usernameRequestPending property as usernameResponse.pending(usernameRequest)
+  * define usernameRequestPending property as usernameRequest.awaiting(usernameResponse)
   * assign side effect to show usernameAjaxIndicator
 
 5. Disable button when AJAX is pending
