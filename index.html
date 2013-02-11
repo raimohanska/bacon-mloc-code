@@ -39,7 +39,7 @@
           fullnameEntered = fullname.map(nonEmpty)
 
           // registration
-          registerClick = registerButton.asEventStream("click").do(".preventDefault")
+          registerClick = registerButton.asEventStream("click").doAction(".preventDefault")
           registrationRequest = username.combine(fullname, function(u, f) {
               return {
                 type: "post",
