@@ -55,7 +55,7 @@ Side-effects are not depicted.
 5. Disable button when AJAX is pending
 
 6. Implement registerClick stream
-  * tip: do(".preventDefault")
+  * tip: doAction(".preventDefault")
 
 7. Implement registrationRequest
   * combine username and password into a new property that would be the data given to JQuery.ajax
